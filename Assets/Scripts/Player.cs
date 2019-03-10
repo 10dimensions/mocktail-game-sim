@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float TurnSpeed; 
 
-    private int HoldFruitCount=2;
-    private bool HoldMug=false;
+    [SerializeField] private int HoldFruitCount=2;
+    [SerializeField] private bool HoldMug=false;
 
     // Start is called before the first frame update
     void Start()
@@ -71,14 +71,10 @@ public class Player : MonoBehaviour
          if (hit.collider != null)
         {
             print(hit.collider.tag);
+            
         }
         Debug.DrawRay(transform.position, transform.up, Color.green, 0.1f);
 
-        //print("raycast done");
     }
 
-    // private void OnCollisionStay2D(Collision2D coll)
-    // {
-    //     print(coll.gameObject.tag);
-    // }
 }

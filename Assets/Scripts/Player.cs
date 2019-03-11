@@ -12,9 +12,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float TurnSpeed; 
+    [SerializeField] private bool CanMove = true;
 
     [SerializeField] private int HoldFruitCount=2;
     [SerializeField] private bool HoldMug=false;
+
+    private List<string> GetFruits;
+    private List<string> JuiceMocktail;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +28,13 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        MoveForward(); 
-        TurnRightAndLeft();
+    {   if(CanMove)
+        {
+            MoveForward(); 
+            TurnRightAndLeft();
 
-        PickAndPlaceCheck();
+            PickAndPlaceCheck();
+        }
     }
 
     private void MoveForward()
@@ -70,10 +76,77 @@ public class Player : MonoBehaviour
 
          if (hit.collider != null)
         {
-            print(hit.collider.tag);
+            switch(hit.collider.tag)
+            {
+                case "Apple":
+                    StoreFruits(hit.collider.tag);
+                break;
+
+                case "Orange":
+                    StoreFruits(hit.collider.tag);
+                break;
+
+                case "Banana":
+                    StoreFruits(hit.collider.tag);
+                break;
+
+                case "Grapes":
+                    StoreFruits(hit.collider.tag);
+                break;
+
+                case "Pineapple":
+                    StoreFruits(hit.collider.tag);
+                break;
+
+                case "Lemon":
+                    StoreFruits(hit.collider.tag);
+                break;
+
+                case "Juicer":
+                    BeginMocktail(hit.collider.tag);
+                break;
+
+                case "Customer":
+                    CustomerDelivery();
+                break;
+
+            }
             
         }
         Debug.DrawRay(transform.position, transform.up, Color.green, 0.1f);
+
+    }
+
+    private void StoreFruits(string _nam)
+    {
+        if(HoldFruitCount == 0)
+        {
+            // remove from list
+            GetFruits.RemoveAt(GetFruits.IndexOf(_nam));
+
+            //update ui
+        }
+
+        else if(HoldFruitCount>0)
+        {
+            //add to list
+            GetFruits.Add(_nam);
+
+            //pdate ui
+        }
+    }
+
+    private void BeginMocktail(string _nam)
+    {
+        //get last item from list 
+
+
+        //start timer 
+        //return juicer list
+    }
+
+    private void CustomerDelivery()
+    {
 
     }
 

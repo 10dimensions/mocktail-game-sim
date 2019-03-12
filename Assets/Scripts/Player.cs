@@ -8,17 +8,18 @@ public class Player : MonoBehaviour
     [SerializeField] private string KeyLeft;
     [SerializeField] private string KeyRight;
     [SerializeField] private string KeyPick;
+    [SerializeField] private string KeyDrop;
     public LayerMask GroundLayer;
 
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float TurnSpeed; 
     [SerializeField] private bool CanMove = true;
 
-    [SerializeField] private int HoldFruitCount=2;
+    [SerializeField] private int HoldFruitCount=3;
     [SerializeField] private bool HoldMug=false;
 
-    private List<string> GetFruits;
-    private List<string> JuiceMocktail;
+    [SerializeField] private List<string> GetFruits;
+    [SerializeField] private List<string> JuiceMocktail;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +69,11 @@ public class Player : MonoBehaviour
         {
             RayCastCheck();
         }
+
+        if(Input.GetKeyDown(KeyDrop))
+        {
+            RayDropCheck();
+        }
     }
 
     private void RayCastCheck()
@@ -75,71 +81,76 @@ public class Player : MonoBehaviour
         var hit = Physics2D.Raycast(transform.position, transform.up, 4f, GroundLayer);
 
          if (hit.collider != null)
-        {
-            switch(hit.collider.tag)
+        {   
+            string hitcollider = hit.collider.tag;
+
+           if(hitcollider == "Apple" || hitcollider == "Orange" || hitcollider == "Banana" ||
+                hitcollider == "Grapes" || hitcollider == "Pineapple" || hitcollider == "Lemon")
             {
-                case "Apple":
-                    StoreFruits(hit.collider.tag);
-                break;
+                StoreFruits(hit.collider.tag);
+            }
 
-                case "Orange":
-                    StoreFruits(hit.collider.tag);
-                break;
-
-                case "Banana":
-                    StoreFruits(hit.collider.tag);
-                break;
-
-                case "Grapes":
-                    StoreFruits(hit.collider.tag);
-                break;
-
-                case "Pineapple":
-                    StoreFruits(hit.collider.tag);
-                break;
-
-                case "Lemon":
-                    StoreFruits(hit.collider.tag);
-                break;
-
-                case "Juicer":
-                    BeginMocktail(hit.collider.tag);
-                break;
-
-                case "Customer":
-                    CustomerDelivery();
-                break;
-
+            else if(hitcollider == "Juicer")
+            {
+                BeginMocktail(hit.collider.tag);
+            }
+            else if(hitcollider == "Juicer")
+            {
+                CustomerDelivery();
             }
             
         }
-        Debug.DrawRay(transform.position, transform.up, Color.green, 0.1f);
+        //Debug.DrawRay(transform.position, transform.up, Color.green, 0.1f);
 
     }
 
+
+     private void RayDropCheck()
+    {   
+        var hit = Physics2D.Raycast(transform.position, transform.up, 4f, GroundLayer);
+
+         if (hit.collider != null)
+        {   
+
+            string hitcollider = hit.collider.tag;
+
+            if(hitcollider == GetFruits[GetFruits.Count-1])
+            {
+                DropFruits(hit.collider.tag);
+            }
+            
+        }
+
+    }
+
+
     private void StoreFruits(string _nam)
+    {
+       if(HoldFruitCount>0)
+        {
+            //add to list
+            GetFruits.Add(_nam);
+            HoldFruitCount--;
+
+            //update ui
+        }
+    }
+
+    private void DropFruits(string _fruit)
     {
         if(HoldFruitCount == 0)
         {
             // remove from list
-            GetFruits.RemoveAt(GetFruits.IndexOf(_nam));
-
+            GetFruits.RemoveAt(GetFruits.IndexOf(_fruit));
+            HoldFruitCount++;
             //update ui
-        }
-
-        else if(HoldFruitCount>0)
-        {
-            //add to list
-            GetFruits.Add(_nam);
-
-            //pdate ui
         }
     }
 
     private void BeginMocktail(string _nam)
     {
         //get last item from list 
-
+        
 
         //start timer 
         //return juicer list

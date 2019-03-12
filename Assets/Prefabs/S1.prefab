@@ -99,6 +99,7 @@ MonoBehaviour:
   KeyLeft: left
   KeyRight: right
   KeyPick: right shift
+  KeyDrop: right ctrl
   GroundLayer:
     serializedVersion: 2
     m_Bits: 512

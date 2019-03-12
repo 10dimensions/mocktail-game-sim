@@ -28,7 +28,7 @@ public class Customer : MonoBehaviour
     void Awake()
     {
        Order = new CustomerOrder();
-       PlaceOrder();
+       //PlaceOrder();
     }
 
     private void PlaceOrder()
